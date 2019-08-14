@@ -69,6 +69,11 @@
     [self updateAutoMediaPlaybackPolicy:args[@"autoMediaPlaybackPolicy"]
                         inConfiguration:configuration];
 
+    // Junfang patch begin: Allow play media in the page without full screen
+    configuration.allowsInlineMediaPlayback = true;
+    configuration.allowsPictureInPictureMediaPlayback = true;
+    // Junfang patch end
+
     _webView = [[WKWebView alloc] initWithFrame:frame configuration:configuration];
     _navigationDelegate = [[FLTWKNavigationDelegate alloc] initWithChannel:_channel];
     _webView.navigationDelegate = _navigationDelegate;
