@@ -37,9 +37,7 @@ class SKPaymentQueueWrapper {
 
   static final SKPaymentQueueWrapper _singleton = SKPaymentQueueWrapper._();
 
-  SKPaymentQueueWrapper._() {
-    callbackChannel.setMethodCallHandler(_handleObserverCallbacks);
-  }
+  SKPaymentQueueWrapper._();
 
   /// Calls [`-[SKPaymentQueue transactions]`](https://developer.apple.com/documentation/storekit/skpaymentqueue/1506026-transactions?language=objc)
   Future<List<SKPaymentTransactionWrapper>> transactions() async {
@@ -59,6 +57,7 @@ class SKPaymentQueueWrapper {
   /// addTransactionObserver:]`](https://developer.apple.com/documentation/storekit/skpaymentqueue/1506042-addtransactionobserver?language=objc).
   void setTransactionObserver(SKTransactionObserverWrapper observer) {
     _observer = observer;
+    callbackChannel.setMethodCallHandler(_handleObserverCallbacks);
   }
 
   /// Posts a payment to the queue.
@@ -106,7 +105,7 @@ class SKPaymentQueueWrapper {
       SKPaymentTransactionWrapper transaction) async {
     await channel.invokeMethod<void>(
         '-[InAppPurchasePlugin finishTransaction:result:]',
-        transaction.payment.productIdentifier);
+        transaction.transactionIdentifier);
   }
 
   /// Restore previously purchased transactions.
