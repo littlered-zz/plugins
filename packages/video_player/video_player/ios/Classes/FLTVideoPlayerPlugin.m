@@ -304,7 +304,7 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
 
 - (void)sendInitialized {
   if (_eventSink && !_isInitialized) {
-    CGSize size = [self.player currentItem].presentationSize;
+    CGSize size = [self.player currentItem].videoComposition.renderSize;
     CGFloat width = size.width;
     CGFloat height = size.height;
 

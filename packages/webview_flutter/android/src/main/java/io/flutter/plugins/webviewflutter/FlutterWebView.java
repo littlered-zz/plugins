@@ -26,6 +26,7 @@ import io.flutter.plugin.platform.PlatformView;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import android.graphics.Color;
 
 public class FlutterWebView implements PlatformView, MethodCallHandler {
   private static final String JS_CHANNEL_NAMES_FIELD = "javascriptChannelNames";
@@ -88,11 +89,13 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
         (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
     displayListenerProxy.onPreWebViewInitialization(displayManager);
     webView = new InputAwareWebView(context, containerView);
+    webView.setBackgroundColor(Color.TRANSPARENT);
     displayListenerProxy.onPostWebViewInitialization(displayManager);
 
     platformThreadHandler = new Handler(context.getMainLooper());
     // Allow local storage.
     webView.getSettings().setDomStorageEnabled(true);
+    webView.getSettings().setTextZoom(100);
     webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
 
     // Multi windows is set with FlutterWebChromeClient by default to handle internal bug: b/159892679.
@@ -235,6 +238,8 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
     if (headers == null) {
       headers = Collections.emptyMap();
     }
+    webView.setBackgroundColor(Color.TRANSPARENT);
+    webView.setVerticalScrollBarEnabled(false);
     webView.loadUrl(url, headers);
     result.success(null);
   }

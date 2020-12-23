@@ -91,7 +91,18 @@
     [self updateAutoMediaPlaybackPolicy:args[@"autoMediaPlaybackPolicy"]
                         inConfiguration:configuration];
 
+    // Junfang patch begin: Allow play media in the page without full screen
+    configuration.allowsInlineMediaPlayback = true;
+    configuration.allowsPictureInPictureMediaPlayback = true;
+    // Junfang patch end
+
     _webView = [[FLTWKWebView alloc] initWithFrame:frame configuration:configuration];
+    _webView.opaque = NO;
+    _webView.backgroundColor = UIColor.clearColor;
+    _webView.scrollView.backgroundColor = UIColor.clearColor;
+    _webView.scrollView.showsHorizontalScrollIndicator = NO;
+    _webView.scrollView.showsVerticalScrollIndicator = NO;
+
     _navigationDelegate = [[FLTWKNavigationDelegate alloc] initWithChannel:_channel];
     _webView.UIDelegate = self;
     _webView.navigationDelegate = _navigationDelegate;
